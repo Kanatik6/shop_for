@@ -4,6 +4,12 @@ from shop.choises import GenderChoise
 
 class Type(models.Model):
     name = models.CharField(max_length=100, verbose_name='Названия типа одежды')
+    category = models.ForeignKey(
+        'Category',
+        on_delete=models.PROTECT, 
+        related_name='types', 
+        verbose_name='Категория'
+        )
 
     def __str__(self):
         return self.name
@@ -34,22 +40,17 @@ class Product(models.Model):
     type = models.ForeignKey(
         "Type",
         on_delete=models.CASCADE, 
-        verbose_name='Тип одежды', 
+        verbose_name='Тип одежды',
+        related_name='products',
         null=True,
-        blank=True
+        blank=True,
         )
-    category = models.ForeignKey(
-        'Category',
-        on_delete=models.PROTECT, 
-        related_name='posts', 
-        verbose_name='Категория'
-        )
+
 
     def __str__(self):
         return self.title
 
     class Meta:
-        unique_together = [['category', 'slug']]
         verbose_name = 'Запись'
         verbose_name_plural = 'Записи'
 

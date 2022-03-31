@@ -19,6 +19,7 @@ class TypeSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'category',
         )
 
 
@@ -42,7 +43,6 @@ class ProductSerializer(serializers.ModelSerializer):
             "price", 
             "title", 
             "content", 
-            "category", 
             "slug",
             "stock",
             'year',
