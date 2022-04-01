@@ -25,9 +25,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'oauth2_provider',
-    'social_django',  
-    # 'rest_social_auth',
-    'drf_social_oauth2',
+    'social_django',
+    'rest_framework_social_oauth2',
 
     # apps
     'shop'
@@ -36,7 +35,7 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
-        'drf_social_oauth2.authentication.SocialAuthentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
     ]
 }
 
@@ -58,15 +57,23 @@ MIDDLEWARE = [
 
 
 AUTHENTICATION_BACKENDS = (
-    'rest_framework_social_oauth2.backends.DjangoOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.vk.VKOAuth2',
-    'social_core.backends.yandex.YandexOAuth2',
-    'drf_social_oauth2.backends.DjangoOAuth2',
+    
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
+    
+    'django.contrib.auth.backends.ModelBackend',
+    
+    # 'social_core.backends.vk.VKOAuth2',
+    # 'social_core.backends.yandex.YandexOAuth2',
+    # 'drf_social_oauth2.backends.DjangoOAuth2',
 )
 
-LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
+
+LOGIN_REDIRECT_URL = '/products/products/1/'
 LOGOUT_REDIRECT_URL = '/'
 
 ROOT_URLCONF = 'babyshop_backend.urls'
@@ -79,12 +86,12 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.debug',
+                'django.contrib.auth.context_processors.auth',
             ],
         },
     },

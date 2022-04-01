@@ -19,10 +19,15 @@ from shop.models import (
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated,]
+    # permission_classes = [IsAuthenticated,]
     
     def retrieve(self, request, *args, **kwargs):
         print(self.request.user)
+        print(self.request.COOKIES)
+        print(self.request.body)
+        print(self.request.content_params)
+        print(self.request.content_type)
+        print(self.request.GET)
         return super().retrieve(request, *args, **kwargs)
 
 
