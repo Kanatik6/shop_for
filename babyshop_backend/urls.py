@@ -21,7 +21,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('products/', include('shop.urls'))
+    path('products/', include('shop.urls')),
+    path('auth/', include('rest_social_auth.urls_jwt_pair')),
+    path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
+    path('auth/', include('rest_framework_social_oauth2.urls')),
+    path('auth/', include('rest_social_auth.urls_session')),
 ]
 
 

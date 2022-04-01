@@ -1,26 +1,15 @@
 from rest_framework import serializers
-from shop.models import Category, Type, Year, Product
+from shop.models import YearTime, Type, Year, Product
 
 
-class CategorySerializers(serializers.ModelSerializer):
+class YearTimeSerializers(serializers.ModelSerializer):
 
     class Meta:
-        model = Category
+        model = YearTime
         fields = (
             "id", 
             "title",
             )
-
-
-class TypeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Type
-        fields = (
-            'id',
-            'name',
-            'category',
-        )
 
 
 class YearSerializer(serializers.ModelSerializer):
@@ -49,3 +38,16 @@ class ProductSerializer(serializers.ModelSerializer):
             'gender',
             'type',
             )
+
+
+class TypeSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True)
+
+    class Meta:
+        model = Type
+        fields = (
+            'id',
+            'name',
+            'year_time',
+            'products'
+        )

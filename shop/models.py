@@ -1,11 +1,12 @@
 from django.db import models
-from shop.choises import GenderChoise
+from shop.choises import GenderChoise,YearChoise
+# ! нужно создать модель order, но пока не понятго как будет работать покупка в проекте
 
 
 class Type(models.Model):
     name = models.CharField(max_length=100, verbose_name='Названия типа одежды')
-    category = models.ForeignKey(
-        'Category',
+    year_time = models.ForeignKey(
+        'YearTime',
         on_delete=models.PROTECT, 
         related_name='types', 
         verbose_name='Категория'
@@ -32,10 +33,9 @@ class Product(models.Model):
     content = models.TextField(verbose_name='Содержание')
     stock = models.PositiveIntegerField(verbose_name="Количество товара")
     gender = models.CharField(max_length=10,choices=GenderChoise.choices)
-    year = models.ForeignKey(
-        Year,
-        on_delete=models.CASCADE,
-        related_name='products'
+    year = models.CharField(
+        max_length=10,
+        choices=YearChoise.choices
         )
     type = models.ForeignKey(
         "Type",
@@ -55,7 +55,7 @@ class Product(models.Model):
         verbose_name_plural = 'Записи'
 
 
-class Category(models.Model):
+class YearTime(models.Model):
     title = models.CharField(max_length=50, unique=True, verbose_name='Название')
 
     class Meta:
@@ -64,3 +64,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# ? будет ли делать комментарий только авторизированный пользователь?
+class Comment(models.Model):
+    title = models.CharField(max_length=500)
+    
