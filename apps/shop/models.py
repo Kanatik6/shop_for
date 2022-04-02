@@ -1,5 +1,7 @@
 from django.db import models
-from shop.choises import GenderChoise,YearChoise
+from django.contrib.auth import get_user_model
+
+from apps.shop.choises import GenderChoise,YearChoise
 
 
 class Type(models.Model):
@@ -73,6 +75,11 @@ class YearTime(models.Model):
 
 class Comment(models.Model):
     title = models.CharField(max_length=500)
+    user = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
     products = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,

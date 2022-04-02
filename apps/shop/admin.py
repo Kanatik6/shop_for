@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from shop.models import (
+from apps.shop.models import (
     Product, 
     YearTime, 
     Type,

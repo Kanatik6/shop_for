@@ -2,17 +2,19 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from shop.serializers import (
+from apps.shop.serializers import (
     YearTimeSerializers, 
     TypeSerializer,
     ProductSerializer,
-    YearSerializer
+    YearSerializer,
+    CommentSerializer,
     )
-from shop.models import (
+from apps.shop.models import (
     Type,
     Product,
     YearTime,
     Year,
+    Comment,
 )
 
 
@@ -42,3 +44,8 @@ class YearTimeViewSet(ModelViewSet):
 class YearViewSet(ModelViewSet):
     queryset = Year.objects.all()
     serializer_class = YearSerializer
+
+
+class CommentViewSet(ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from shop.models import YearTime, Type, Year, Product
+from apps.shop.models import (
+    YearTime, 
+    Type, 
+    Year, 
+    Product,
+    Comment,
+)
 
 
 class YearTimeSerializers(serializers.ModelSerializer):
@@ -50,4 +56,16 @@ class TypeSerializer(serializers.ModelSerializer):
             'name',
             'year_time',
             'products'
+        )
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Comment
+        fields = (
+            'id',
+            'title',
+            'user',
+            'product',
         )

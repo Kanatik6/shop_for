@@ -1,6 +1,6 @@
 from rest_framework.routers import SimpleRouter
 
-from shop.views import (
+from apps.shop.views import (
     ProductViewSet,
     TypeViewSet,
     YearTimeViewSet,

@@ -3,7 +3,7 @@ from django.db import models
 
 from itertools import chain
 
-from shop.models import Product
+from apps.shop.models import Product
 
 
 class Cart(models.Model):
