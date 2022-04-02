@@ -22,7 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', include('apps.shop.urls')),
     path('cart/', include('apps.cart.urls')),
-    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('apps.accounts.urls')),
+    path('accounts/social/', include('allauth.urls')),
+
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 

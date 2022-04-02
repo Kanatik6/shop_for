@@ -1,8 +1,12 @@
-import os
-from pathlib import Path
 
+from pathlib import Path
+import environ
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = 'django-insecure-#rc_v7+@s=*6qu*p2rnx&7-=zpdl$)yl@gl4#+g=ch&h^%fy*('
 
@@ -11,6 +15,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
+    "corsheaders",
+    
     'django.contrib.auth',
     'django.contrib.sites',
     'django.contrib.messages',
@@ -20,9 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # packages
+    'django_filters',
     'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -30,26 +38,30 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.yandex',
     'allauth.socialaccount.providers.google',
 
+
     # app
     'apps.shop',
     'apps.cart',
+    'apps.accounts',
 ]
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/products/products/1/'
-LOGOUT_REDIRECT_URL = '/'
-
+LOGIN_REDIRECT_URL = '/products/products/'
+LOGOUT_REDIRECT_URL = '/products/products/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'babyshop_backend.urls'
 
@@ -86,7 +98,6 @@ DATABASES = {
     }
 }
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -102,6 +113,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'hamzasharit@gmail.com'
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = 'hamzasharit@gmail.com'
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

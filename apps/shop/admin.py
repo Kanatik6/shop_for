@@ -4,7 +4,6 @@ from apps.shop.models import (
     Product, 
     YearTime, 
     Type,
-    Year,
     )
 
 
@@ -16,4 +15,3 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(YearTime)
 admin.site.register(Product)
 admin.site.register(Type)
-admin.site.register(Year)

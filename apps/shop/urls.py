@@ -4,15 +4,15 @@ from apps.shop.views import (
     ProductViewSet,
     TypeViewSet,
     YearTimeViewSet,
-    YearViewSet
+    RaitingViewSet,
 )
 
 router = SimpleRouter()
 
 router.register('products',ProductViewSet,basename='product')
-router.register('type',TypeViewSet,basename='type')
-router.register('year',YearViewSet,basename='year')
-router.register('year_time',YearTimeViewSet,basename='year_time')
+router.register('types',TypeViewSet,basename='type')
+router.register('year_times',YearTimeViewSet,basename='year_time')
+router.register('comments',RaitingViewSet,basename='comment')
 
 
 urlpatterns = []

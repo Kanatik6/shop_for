@@ -1,31 +1,32 @@
 from rest_framework import serializers
 from apps.shop.models import (
     YearTime, 
-    Type, 
-    Year, 
+    Type,
     Product,
-    Comment,
+    Raiting,
 )
 
 
+class TypeInSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Type
+        fields = [
+            'id',
+            'name',
+        ]
+
+
 class YearTimeSerializers(serializers.ModelSerializer):
+    types = TypeInSerializer(many=True,read_only=True)
 
     class Meta:
         model = YearTime
         fields = (
             "id", 
             "title",
+            'types'
             )
-
-
-class YearSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Year
-        fields = (
-            'id',
-            'year',
-        )
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -39,7 +40,6 @@ class ProductSerializer(serializers.ModelSerializer):
             "title", 
             "content", 
             "slug",
-            "stock",
             'year',
             'gender',
             'type',
@@ -47,7 +47,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class TypeSerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True)
+    products = ProductSerializer(many=True,read_only=True)
 
     class Meta:
         model = Type
@@ -59,13 +59,23 @@ class TypeSerializer(serializers.ModelSerializer):
         )
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class RaitingSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Comment
+        model = Raiting
         fields = (
             'id',
             'title',
             'user',
             'product',
         )
+        read_only_fields = (
+            'user',
+        )
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        instance = self.Meta.model._default_manager.create(
+            user=user, **validated_data
+        )
+        return instance

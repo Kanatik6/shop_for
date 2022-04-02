@@ -36,10 +36,6 @@ class CartProductSerializer(serializers.ModelSerializer):
         cart = Cart.objects.filter(user=self.context["request"].user.id).first()
         product = validated_data["product"]
 
-        if validated_data["amount"] > product.amount:
-            raise ValidationError(detail="items in stock fewer  than you want to buy")
-
-        product.amount -= validated_data["amount"]
         product.save()
 
         Product = self.Meta.model
