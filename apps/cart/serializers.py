@@ -5,18 +5,6 @@ from apps.cart.models import Cart,CartProduct,Order
 from apps.shop.serializers import ProductSerializer
 
 
-class CartSerializer(serializers.ModelSerializer):
-    cart_products = ProductSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Cart
-        fields = (
-            "id",
-            "total_price",
-            "cart_products",
-        )
-
-
 class CartProductSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -25,22 +13,39 @@ class CartProductSerializer(serializers.ModelSerializer):
             "id",
             "product",
             "amount",
-            "cart",
             "final_price",
             "price",
             "title",
         )
-        read_only_fields = ["cart", "price", "final_price", "title"]
+        read_only_fields = ["price", "final_price", "title"]
 
     def create(self, validated_data):
         cart = Cart.objects.filter(user=self.context["request"].user.id).first()
         product = validated_data["product"]
-
         product.save()
 
-        Product = self.Meta.model
-        instance = Product._default_manager.create(cart=cart, **validated_data)
-        return instance
+        CartProduct = self.Meta.model
+        cart_product = CartProduct.objects.filter(product=product,cart=cart).first()
+
+        if cart_product:
+            cart_product.amount += validated_data.get('amount')
+            cart_product.save()
+            return cart_product
+        else:
+            instance = CartProduct._default_manager.create(cart=cart, **validated_data)
+            return instance
+
+
+class CartSerializer(serializers.ModelSerializer):
+    cart_products = CartProductSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Cart
+        fields = (
+            "id",
+            "total_price",
+            "cart_products",
+        )
 
 
 class OrderSerializer(serializers.ModelSerializer):

@@ -43,6 +43,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'year',
             'gender',
             'type',
+            "raiting",
             )
 
 
@@ -68,6 +69,7 @@ class RaitingSerializer(serializers.ModelSerializer):
             'title',
             'user',
             'product',
+            'value',
         )
         read_only_fields = (
             'user',

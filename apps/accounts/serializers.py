@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 
-from apps.cart.serializers import CartSerializer
+from apps.cart.serializers import CartSerializer,ProductSerializer
 from apps.accounts.models import Profile
 
 User = get_user_model()
@@ -25,14 +25,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    cart = CartSerializer()
 
     class Meta:
         model = User
-        fields = ['id', 'username','cart']
+        fields = ['id', 'username']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    favorites = ProductSerializer(many=True,read_only=True)
+    user = UserSerializer(read_only=True)
     
     class Meta:
         model = Profile
@@ -41,6 +42,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'email_verified',
             'delivery_address',
             'billing_address',
+            'favorites',
             'user',
         )
         read_only_fields = [
