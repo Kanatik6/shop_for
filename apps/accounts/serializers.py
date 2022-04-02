@@ -47,3 +47,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'user',
             'email_verified'
         ]
+
+
+class FavoriteIDSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
